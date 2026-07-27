@@ -22,31 +22,45 @@
         font-family: Arial, sans-serif;
       }
 
+      a-scene {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+
+      .a-enter-vr,
+      .a-enter-vr-button,
+      .a-enter-ar,
+      .a-enter-ar-button {
+        display: none !important;
+      }
+
       .instruccion {
         position: fixed;
         z-index: 10;
-        top: 16px;
+        top: 10px;
         left: 50%;
         transform: translateX(-50%);
-        width: min(86vw, 430px);
+        width: min(78vw, 330px);
         box-sizing: border-box;
-        padding: 11px 16px;
+        padding: 8px 12px;
         border: 1px solid rgba(255, 219, 147, 0.45);
-        border-radius: 14px;
+        border-radius: 11px;
         background: rgba(71, 38, 21, 0.86);
         color: #fff7e8;
         text-align: center;
-        font-size: 15px;
-        line-height: 1.3;
+        font-size: 13px;
+        line-height: 1.25;
         pointer-events: none;
         backdrop-filter: blur(5px);
       }
 
       .firma {
         display: block;
-        margin-top: 3px;
+        margin-top: 2px;
         color: #ffd890;
-        font-size: 12px;
+        font-size: 10px;
       }
     </style>
   </head>
@@ -63,7 +77,6 @@
       renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
-      embedded
     >
       <a-assets>
         <img id="gueshela" src="./VGL(1).jpg" crossorigin="anonymous" />
