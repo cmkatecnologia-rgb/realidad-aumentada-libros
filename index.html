@@ -99,16 +99,16 @@
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
       <a-entity mindar-image-target="targetIndex: 0">
-        <!-- Foto a la izquierda de la tapa -->
+        <!-- Foto arriba de la frase, a la derecha de la tapa -->
         <a-plane
-          position="-0.78 0.32 0.05"
+          position="0.79 0.63 0.05"
           width="0.62"
           height="0.62"
           material="color: #fffaf1; opacity: 0.96; transparent: true"
         ></a-plane>
         <a-image
           src="#gueshela"
-          position="-0.78 0.32 0.06"
+          position="0.79 0.63 0.06"
           width="0.57"
           height="0.57"
           animation="property: scale; from: 0.01 0.01 0.01; to: 1 1 1; dur: 650; easing: easeOutBack"
@@ -116,22 +116,22 @@
 
         <!-- Frase a la derecha de la tapa -->
         <a-plane
-          position="0.79 -0.02 0.05"
+          position="0.79 -0.15 0.05"
           width="0.72"
-          height="0.9"
+          height="0.82"
           material="color: #7c351f; opacity: 0.92; transparent: true"
         ></a-plane>
         <a-text
           value="El venerable Gueshela nos presenta el sendero completo hacia la iluminación de una manera fácil de comprender y de practicar."
-          position="0.79 -0.01 0.06"
+          position="0.79 -0.14 0.06"
           width="0.64"
           align="center"
           anchor="center"
           baseline="center"
           wrap-count="22"
           color="#fff8e9"
-          font="https://cdn.aframe.io/fonts/Roboto-msdf.json"
-          animation="property: position; from: 0.79 -0.15 0.06; to: 0.79 -0.01 0.06; dur: 700; easing: easeOutCubic"
+          font="dejavu"
+          animation="property: position; from: 0.79 -0.28 0.06; to: 0.79 -0.14 0.06; dur: 700; easing: easeOutCubic"
         ></a-text>
       </a-entity>
     </a-scene>
