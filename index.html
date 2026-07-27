@@ -22,6 +22,27 @@
         font-family: Arial, sans-serif;
       }
 
+      body {
+        position: relative;
+      }
+
+      body > video {
+        z-index: 0 !important;
+        pointer-events: none;
+      }
+
+      a-scene {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 1;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+
+      .a-canvas {
+        background: transparent !important;
+      }
+
       .a-enter-vr,
       .a-enter-vr-button,
       .a-enter-ar,
@@ -67,7 +88,7 @@
     <a-scene
       mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.001; filterBeta: 0.01; missTolerance: 8; warmupTolerance: 5;"
       color-space="sRGB"
-      renderer="colorManagement: true, physicallyCorrectLights"
+      renderer="alpha: true; colorManagement: true; physicallyCorrectLights: true"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
     >
