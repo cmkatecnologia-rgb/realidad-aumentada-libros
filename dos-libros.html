@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <title>Biblioteca Tharpa — Realidad aumentada</title>
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+    <style>
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        position: relative;
+      }
+
+      body > video {
+        z-index: 0 !important;
+        pointer-events: none;
+      }
+
+      a-scene {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 1;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+
+      .a-canvas {
+        background: transparent !important;
+      }
+
+      .a-enter-vr,
+      .a-enter-vr-button,
+      .a-enter-ar,
+      .a-enter-ar-button {
+        display: none !important;
+      }
+
+      .instruccion {
+        position: fixed;
+        z-index: 10;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: min(78vw, 330px);
+        box-sizing: border-box;
+        padding: 8px 12px;
+        border: 1px solid rgba(255, 219, 147, 0.45);
+        border-radius: 11px;
+        background: rgba(71, 38, 21, 0.86);
+        color: #fff7e8;
+        text-align: center;
+        font-size: 13px;
+        line-height: 1.25;
+        pointer-events: none;
+        backdrop-filter: blur(5px);
+      }
+
+      .firma {
+        display: block;
+        margin-top: 2px;
+        color: #ffd890;
+        font-size: 10px;
+      }
+
+      .ar-info {
+        position: fixed;
+        z-index: 8;
+        right: 10px;
+        bottom: 18px;
+        width: min(34vw, 160px);
+        box-sizing: border-box;
+        overflow: hidden;
+        border: 1px solid rgba(255, 224, 170, 0.72);
+        border-radius: 12px;
+        background: rgba(104, 43, 27, 0.94);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        opacity: 0;
+        transform: translateY(14px);
+        transition:
+          opacity 220ms ease,
+          transform 220ms ease;
+        pointer-events: none;
+      }
+
+      .ar-info.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .ar-info img {
+        display: block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        background: #fffaf1;
+      }
+
+      .ar-info p {
+        margin: 0;
+        padding: 9px 8px 10px;
+        color: #fff8e9;
+        text-align: center;
+        font-size: clamp(10px, 2.8vw, 13px);
+        line-height: 1.23;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="instruccion">
+      Apuntá la cámara a la tapa de un libro
+      <span class="firma">CMKA · Biblioteca Tharpa</span>
+    </div>
+
+    <aside id="ar-info" class="ar-info" aria-hidden="true">
+      <img src="./VGL(1).jpg" alt="Venerable Gueshela" />
+      <p id="quote-text">
+        El venerable Gueshela nos presenta el sendero completo hacia la
+        iluminación de una manera fácil de comprender y de practicar.
+      </p>
+    </aside>
+
+    <a-scene
+      mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.001; filterBeta: 0.01; missTolerance: 8; warmupTolerance: 5;"
+      color-space="sRGB"
+      renderer="alpha: true; colorManagement: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: false"
+      device-orientation-permission-ui="enabled: false"
+    >
+      <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
+      <a-entity id="book-target-0" mindar-image-target="targetIndex: 0"></a-entity>
+      <a-entity id="book-target-1" mindar-image-target="targetIndex: 1"></a-entity>
+    </a-scene>
+
+    <script>
+      const infoCard = document.querySelector("#ar-info");
+      const quoteText = document.querySelector("#quote-text");
+      const phrases = {
+        0: "El venerable Gueshela nos presenta el sendero completo hacia la iluminación de una manera fácil de comprender y de practicar.",
+        1: "Gueshela nos enseña como cultivar paz interior para ser felices en todo momento."
+      };
+      let activeTargets = [];
+      let hideTimer;
+
+      function showTarget(targetIndex) {
+        clearTimeout(hideTimer);
+        activeTargets = activeTargets.filter((index) => index !== targetIndex);
+        activeTargets.push(targetIndex);
+        quoteText.textContent = phrases[targetIndex];
+        infoCard.classList.add("visible");
+        infoCard.setAttribute("aria-hidden", "false");
+      }
+
+      function hideTarget(targetIndex) {
+        activeTargets = activeTargets.filter((index) => index !== targetIndex);
+
+        if (activeTargets.length > 0) {
+          quoteText.textContent = phrases[activeTargets[activeTargets.length - 1]];
+          return;
+        }
+
+        clearTimeout(hideTimer);
+        hideTimer = setTimeout(() => {
+          infoCard.classList.remove("visible");
+          infoCard.setAttribute("aria-hidden", "true");
+        }, 600);
+      }
+
+      [0, 1].forEach((targetIndex) => {
+        const target = document.querySelector(`#book-target-${targetIndex}`);
+        target.addEventListener("targetFound", () => showTarget(targetIndex));
+        target.addEventListener("targetLost", () => hideTarget(targetIndex));
+      });
+    </script>
+  </body>
+</html>
